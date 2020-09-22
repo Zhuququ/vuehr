@@ -21,14 +21,19 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
 router.beforeEach((to, from, next) => {
-    console.log(to);
-  if (to.path == '/') {
-    // 如果是去Login页面
-    next();
-  } else {
-    initMenus(router, store);
-    next();
-  }
+    if (to.path == '/') {
+        // 如果是去Login页面，则直接访问
+        next();
+    } else {
+        // 如果已登录，则继续往下走
+        if (window.sessionStorage.getItem('user')) {
+            initMenus(router, store);
+            next();
+            // 如果未登录，则跳转至登录页面
+        } else {
+            next('/?redirect=' + to.path);
+        }
+    }
 })
 
 new Vue({

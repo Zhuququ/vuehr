@@ -52,7 +52,9 @@
                         this.postKeyValueRequest('/doLogin', this.loginForm).then(resp=>{
                             if (resp) {
                                 window.sessionStorage.setItem("user", JSON.stringify(resp.obj));
-                                this.$router.replace("/home");
+                                // this.$route获取url信息
+                                let redirect = this.$route.query.redirect;
+                                this.$router.replace((redirect == '/' || redirect == undefined) ? "/home" : redirect);
                             }
                         });
                     } else {

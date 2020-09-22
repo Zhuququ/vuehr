@@ -49,7 +49,7 @@
                     <div class="homeWelcome" v-if="this.$router.currentRoute.path=='/home'">
                         欢迎来到微人事！
                     </div>
-                    <router-view></router-view>
+                    <router-view class="homeRouterView"></router-view>
                 </el-main>
             </el-container>
         </el-container>
@@ -137,5 +137,9 @@
     .icon {
         color: #47aefd !important;
         margin-right: 10px;
+    }
+
+    .homeRouterView {
+        margin-top: 10px;
     }
 </style>
