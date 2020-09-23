@@ -11,18 +11,17 @@
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column label="编号" prop="id" width="55"></el-table-column>
                 <el-table-column label="职位名称" prop="name"></el-table-column>
+                <el-table-column label="是否启用" width="100">
+                    <template slot-scope="scope">
+                        <el-tag size="small" type="success" v-if="scope.row.enabled">已启用</el-tag>
+                        <el-tag size="small" type="danger" v-else>未启用</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column label="创建时间" prop="createDate" width="180"></el-table-column>
                 <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
-                        <el-button
-                                @click="showEditView(scope.$index, scope.row)"
-                                size="mini">编辑
-                        </el-button>
-                        <el-button
-                                @click="deletePosition(scope.$index, scope.row)"
-                                size="mini"
-                                type="danger">删除
-                        </el-button>
+                        <el-button @click="showEditView(scope.$index, scope.row)" size="mini">编辑</el-button>
+                        <el-button @click="deletePosition(scope.$index, scope.row)" size="mini" type="danger">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -31,9 +30,13 @@
             </el-button>
         </div>
         <el-dialog :visible.sync="dialogVisible" title="修改职位" width="20%">
-            <div>
+            <div class="editPosDiv1">
                 <el-tag>职位名称</el-tag>
                 <el-input class="editPosInput" size="small" v-model="editPos.name"></el-input>
+            </div>
+            <div class="editPosDiv2">
+                <el-tag>是否启用</el-tag>
+                <el-switch class="editPosRadio" v-model="editPos.enabled"></el-switch>
             </div>
             <span class="dialog-footer" slot="footer">
                 <el-button @click="hideEditView" size="small">取 消</el-button>
@@ -54,7 +57,8 @@
                 positions: [],
                 dialogVisible: false,
                 editPos: {
-                    name: ''
+                    name: '',
+                    enabled: true
                 },
                 multipleSelection: []
             }
@@ -95,6 +99,7 @@
                         if (resp) {
                             this.initPositions();
                             this.editPos.name = '';
+                            this.editPos.enabled = true;
                             this.dialogVisible = false;
                         }
                     });
@@ -156,12 +161,20 @@
     }
 
     .posTable {
-        width: 610px;
+        width: 750px;
         margin-top: 10px;
+    }
+
+    .editPosDiv2 {
+        margin-top: 8px;
     }
 
     .editPosInput {
         width: 200px;
+        margin-left: 8px;
+    }
+
+    .editPosRadio {
         margin-left: 8px;
     }
 
